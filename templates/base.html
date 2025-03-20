@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}個人留言板{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><a href="{{ url_for('index') }}">兔兔留言板</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">首頁</a></li>
+                    <li><a href="{{ url_for('create_message') }}">發表留言</a></li>
+                    {% if session.user_id %}
+                        <li><a href="{{ url_for('logout') }}">登出 ({{ session.username }})</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}">登入</a></li>
+                        <li><a href="{{ url_for('register') }}">註冊</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        {% for message in get_flashed_messages() %}
+            <div class="flash">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; {{ now.year }} 個人留言板 - 版權所有</p>
+        </div>
+    </footer>
+    <!-- 添加在 footer 之後，body 結束標籤之前 -->
+    {% block scripts %}{% endblock %}
+</body>
+</html>
