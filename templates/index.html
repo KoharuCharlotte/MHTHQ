@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}首頁 - 個人留言板{% endblock %}
+
+{% block content %}
+    <section class="welcome">
+        <h2>歡迎來到我的留言板</h2>
+        <p>在這裡您可以留下您想說的話，選擇公開或私密模式。</p>
+        <a href="{{ url_for('create_message') }}" class="btn primary">發表留言</a>
+    </section>
+
+    <section class="messages">
+        <h2>最新留言</h2>
+        {% if messages %}
+            <ul class="message-list">
+                {% for message in messages %}
+                    <li class="message-item {% if message.is_private %}private{% endif %}">
+                        <div class="message-header">
+                            <span class="username">{{ message.nickname }}</span>
+                            <span class="time">{{ message.created_at }}</span>
+                            {% if message.is_private %}
+                                <span class="private-badge">私密</span>
+                            {% endif %}
+                        </div>
+                        <div class="message-content">{{ message.content }}</div>
+                        {% if is_admin %}
+                            <form action="{{ url_for('delete_message', id=message.id) }}" method="post" class="delete-form">
+                                <button type="submit" class="btn danger">刪除</button>
+                            </form>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-messages">目前尚無留言，成為第一個留言的人吧！</p>
+        {% endif %}
+    </section>
+{% endblock %}
