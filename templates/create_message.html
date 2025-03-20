@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}發表留言 - 個人留言板{% endblock %}
+
+{% block content %}
+    <section class="form-container">
+        <h2>發表新留言</h2>
+        <form method="post">
+            <div class="form-group">
+                <label for="nickname">暱稱 (選填)</label>
+                <input type="text" name="nickname" id="nickname" placeholder="留空則使用默認暱稱">
+            </div>
+            <div class="form-group">
+                <label for="content">留言內容</label>
+                <textarea name="content" id="content" rows="6" required></textarea>
+            </div>
+            <div class="form-group checkbox">
+                <input type="checkbox" name="is_private" id="is_private">
+                <label for="is_private">設為私密（僅管理員可見）</label>
+            </div>
+            <!-- reCAPTCHA -->
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="{{ config.RECAPTCHA_SITE_KEY }}"></div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn primary">發表留言</button>
+                <a href="{{ url_for('index') }}" class="btn secondary">取消</a>
+            </div>
+        </form>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endblock %}
